@@ -1,5 +1,5 @@
-from .db_connect import myDB
-from .user import User
+from db_connect import myDB
+from user import User
 from peewee import *
 
 class DonHang(Model):

@@ -1,12 +1,12 @@
 import datetime
 
-from .donhang import DonHang
-from .sanpham import SanPham
-from .sanphammoi import SanPhamMoi
-from .chitietdonhang import ChiTietDonHang
-from .user import User
+from donhang import DonHang
+from sanpham import SanPham
+from sanphammoi import SanPhamMoi
+from chitietdonhang import ChiTietDonHang
+from user import User
 from peewee import *
-from .db_connect import myDB
+from db_connect import myDB
 
 arr_trangthai = ['Chưa xác nhận', 'Đã xác nhận', 'Đang giao hàng', 'Đã nhận hàng']
 def get_sanpham():
@@ -90,4 +90,4 @@ def get_donchuaht():
 
 
 if __name__ == '__main__':
-    print(get_dsdonhang())
+    print(get_donchuaht())

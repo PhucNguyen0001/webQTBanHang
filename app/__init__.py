@@ -1,7 +1,7 @@
 from flask import Flask, render_template, url_for, redirect
 import os
 
-from .database import get_user
+from .database import *
 
 # from .database import query
 
@@ -26,7 +26,11 @@ def a():
 
 @app.route('/index')
 def index():
-    return render_template('/index.html')
+    return render_template('/index.html',
+                           tongtien=get_tongtien(),
+                           tongtheothang=get_tongtientheothang(),
+                           donht=get_demdonht(),
+                           donchuaht=get_donchuaht())
 
 
 @app.route('/tkds')
@@ -36,7 +40,7 @@ def tkds():
 
 @app.route('/qldh')
 def qldh():
-    return render_template('/qldh.html')
+    return render_template('/qldh.html', list_dh=get_dsdonhang())
 
 
 @app.route('/qlkh')
