@@ -26,11 +26,17 @@ def a():
 
 @app.route('/index')
 def index():
+    months, data_bar = get_money_by_month()
+    type, data_pie = get_money_by_type()
     return render_template('/index.html',
                            tongtien=get_tongtien(),
                            tongtheothang=get_tongtientheothang(),
                            donht=get_demdonht(),
-                           donchuaht=get_donchuaht())
+                           donchuaht=get_donchuaht(),
+                           months=months,
+                           data_bar=data_bar,
+                           type=type,
+                           data_pie=data_pie)
 
 
 @app.route('/tkds')

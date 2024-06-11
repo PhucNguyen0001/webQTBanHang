@@ -89,5 +89,33 @@ def get_donchuaht():
             .scalar())
 
 
+def get_money_by_month():
+    query = (DonHang
+             .select(DonHang.ngaydathang, fn.SUM(DonHang.tongtien))
+             .group_by(fn.MONTH(DonHang.ngaydathang))
+             .dicts())
+    # return list(query)
+    ar_month = [record['ngaydathang'].strftime('%B') for record in query]
+    ar_data = [record['tongtien'] for record in query]
+    return ar_month, ar_data
+
+
+def get_money_by_type():
+    query1 = (ChiTietDonHang
+              .select(SanPhamMoi.loai.alias('loai'), fn.SUM(ChiTietDonHang.soluong * ChiTietDonHang.gia).alias('tong_tien'))
+              .join(SanPhamMoi)
+              .group_by(SanPhamMoi.loai))
+    query2 = (SanPham
+              .select(SanPham.tensanpham, query1.c.tong_tien)
+              .join(query1, on=(SanPham.id == query1.c.loai))
+              .dicts())
+    ar_tensp = []
+    ar_tongtien = []
+    for record in query2:
+        ar_tensp.append(record['tensanpham'])
+        ar_tongtien.append(record['tong_tien'])
+    return ar_tensp, ar_tongtien
+
+
 if __name__ == '__main__':
     print(get_dsdonhang())
