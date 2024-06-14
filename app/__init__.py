@@ -52,3 +52,8 @@ def qldh():
 @app.route('/qlkh')
 def qlkh():
     return render_template('/qlkh.html', users=get_user())
+
+
+@app.route('/qlsp')
+def qlsp():
+    return render_template('/qlsp.html', products=get_product())

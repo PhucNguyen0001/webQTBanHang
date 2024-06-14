@@ -106,7 +106,8 @@ def get_money_by_month():
 
 def get_money_by_type():
     query1 = (ChiTietDonHang
-              .select(SanPhamMoi.loai.alias('loai'), fn.SUM(ChiTietDonHang.soluong * ChiTietDonHang.gia).alias('tong_tien'))
+              .select(SanPhamMoi.loai.alias('loai'),
+                      fn.SUM(ChiTietDonHang.soluong * ChiTietDonHang.gia).alias('tong_tien'))
               .join(SanPhamMoi)
               .group_by(SanPhamMoi.loai))
     query2 = (SanPham
@@ -121,6 +122,20 @@ def get_money_by_type():
     return ar_tensp, ar_tongtien
 
 
+def get_product():
+    query = (SanPhamMoi
+             # .select(SanPhamMoi.tensp, SanPhamMoi.giasp, SanPhamMoi.mota, SanPhamMoi.hinhanh, SanPham.tensanpham)
+             .select(SanPhamMoi.tensp,
+                     SanPhamMoi.giasp,
+                     SanPhamMoi.mota,
+                     SanPhamMoi.hinhanh,
+                     SanPham.tensanpham)
+             .join(SanPham)
+             .dicts())
+    return list(query)
+
 
 if __name__ == '__main__':
-    print(get_money_by_type())
+    print(get_product())
+    # for record in get_product():
+    #     print(record.tensanpham)

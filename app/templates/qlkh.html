@@ -81,11 +81,11 @@
             </li> -->
 
             <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="tkds">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Thống kê doanh số</span></a>
-            </li>
+<!--            <li class="nav-item">-->
+<!--                <a class="nav-link" href="tkds">-->
+<!--                    <i class="fas fa-fw fa-chart-area"></i>-->
+<!--                    <span>Thống kê doanh số</span></a>-->
+<!--            </li>-->
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
@@ -376,7 +376,12 @@
                                             <td>{{ user.Mobile }}</td>
                                             <td>{{ user.Address }}</td>
                                             <td>{{ user.Password }}</td>
-                                            <td>Thao tác</td>
+                                            <th><a href="#">
+                                                <button class="btn btn-primary">Sửa</button>
+                                            </a>
+                                            <a href="#">
+                                                <button class="btn btn-danger">Xóa</button>
+                                            </a></th>
                                         </tr>
                                     {% endfor %}
                                     </tbody>

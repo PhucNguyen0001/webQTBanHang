@@ -117,5 +117,18 @@ def get_money_by_type():
     return ar_tensp, ar_tongtien
 
 
+def get_product():
+    query = (SanPhamMoi
+             # .select(SanPhamMoi.tensp, SanPhamMoi.giasp, SanPhamMoi.mota, SanPhamMoi.hinhanh, SanPham.tensanpham)
+             .select(SanPhamMoi.tensp,
+                     SanPhamMoi.giasp,
+                     SanPhamMoi.mota,
+                     SanPhamMoi.hinhanh,
+                     SanPham.tensanpham)
+             .join(SanPham)
+             .dicts())
+    return list(query)
+
+
 if __name__ == '__main__':
     print(get_dsdonhang())
