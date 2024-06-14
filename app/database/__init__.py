@@ -1,4 +1,5 @@
 import datetime
+import base64
 
 from .donhang import DonHang
 from .sanpham import SanPham
@@ -120,15 +121,70 @@ def get_money_by_type():
 def get_product():
     query = (SanPhamMoi
              # .select(SanPhamMoi.tensp, SanPhamMoi.giasp, SanPhamMoi.mota, SanPhamMoi.hinhanh, SanPham.tensanpham)
-             .select(SanPhamMoi.tensp,
+             .select(SanPhamMoi.id,
+                     SanPhamMoi.tensp,
                      SanPhamMoi.giasp,
                      SanPhamMoi.mota,
-                     SanPhamMoi.hinhanh,
                      SanPham.tensanpham)
              .join(SanPham)
              .dicts())
     return list(query)
 
 
+def select_product(id):
+    query = (SanPhamMoi
+             # .select(SanPhamMoi.tensp, SanPhamMoi.giasp, SanPhamMoi.mota, SanPhamMoi.hinhanh, SanPham.tensanpham)
+             .select(SanPhamMoi.tensp,
+                     SanPhamMoi.giasp,
+                     SanPhamMoi.mota,
+                     SanPhamMoi.hinhanh,
+                     SanPham.tensanpham,
+                     SanPhamMoi.id)
+             .join(SanPham)
+             .where(SanPhamMoi.id == id)
+             .dicts())
+    result = list(query)[0]
+    return result
+
+
+def suaThongTinSanPham(id, tensp, giasp, hinhanh, mota, loai):
+    if hinhanh is None:
+        query = (SanPhamMoi.update(tensp=tensp,
+                      giasp=giasp,
+                      mota=mota,
+                      loai=loai)
+                 .where(SanPhamMoi.id == id))
+    else:
+        query = (SanPhamMoi.update(tensp=tensp,
+                      giasp=giasp,
+                      hinhanh=hinhanh,
+                      mota=mota,
+                      loai=loai)
+                 .where(SanPhamMoi.id == id))
+
+    query.execute()
+
+
+def get_loai():
+    query = SanPham.select(SanPham.id, SanPham.tensanpham).dicts()
+    return list(query)
+
+
+def themSanPhamMoi(tensp, giasp, hinhanh, mota, loai):
+    if hinhanh is None:
+        query = (SanPhamMoi.insert(tensp=tensp,
+                      giasp=giasp,
+                      mota=mota,
+                      hinhanh='',
+                      loai=loai))
+    else:
+        query = (SanPhamMoi.insert(tensp=tensp,
+                      giasp=giasp,
+                      hinhanh=hinhanh,
+                      mota=mota,
+                      loai=loai))
+    query.execute()
+
+
 if __name__ == '__main__':
-    print(get_dsdonhang())
+    print(get_product(18))

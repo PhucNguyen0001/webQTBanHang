@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - 404</title>
+    <title>SB Admin 2 - Dashboard</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{ url_for('static', filename='vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
@@ -31,7 +31,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/index">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -43,13 +43,13 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index">
+                <a class="nav-link" href="/index">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Trang chính</span></a>
             </li>
 
             <!-- Divider -->
-            <hr class="sidebar-divider">    
+            <hr class="sidebar-divider">
 
             <!-- Heading -->
             <div class="sidebar-heading">
@@ -88,7 +88,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="/qlsp">
                     <i class="fas fa-fw fa-table"></i>
-                    <span>Quản lí san</span>
+                    <span>Quản lí sản phẩm</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -114,7 +114,7 @@
 
             <!-- Sidebar Message -->
             <div class="sidebar-card d-none d-lg-flex">
-                <img class="sidebar-card-illustration mb-2" src="img/undraw_rocket.svg" alt="...">
+                <img class="sidebar-card-illustration mb-2" src="{{ url_for('static', filename='img/undraw_rocket.svg') }}" alt="...">
                 <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>
                 <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
             </div>
@@ -244,7 +244,7 @@
                                 </h6>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_1.svg"
+                                        <img class="rounded-circle" src="{{ url_for('static', filename='img/undraw_profile_1.svg') }}"
                                             alt="...">
                                         <div class="status-indicator bg-success"></div>
                                     </div>
@@ -256,7 +256,7 @@
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_2.svg"
+                                        <img class="rounded-circle" src="{{ url_for('static', filename='img/undraw_profile_2.svg') }}"
                                             alt="...">
                                         <div class="status-indicator"></div>
                                     </div>
@@ -268,7 +268,7 @@
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="img/undraw_profile_3.svg"
+                                        <img class="rounded-circle" src="{{ url_for('static', filename='img/undraw_profile_3.svg') }}"
                                             alt="...">
                                         <div class="status-indicator bg-warning"></div>
                                     </div>
@@ -302,7 +302,7 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
                                 <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                    src="{{ url_for('static', filename='img/undraw_profile.svg') }}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -334,16 +334,67 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    <section class="py-5">
+                        <div class="container px-4 px-lg-5 my-5">
+                            <div class="row gx-4 gx-lg-5 align-items-center">
+                                <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" id="picture"
+                                        {% if product.hinhanh %}
+                                            src="{{ product.hinhanh }}"
+                                        {% else %}
+                                            src="{{ url_for('static', filename='/img/default_pic.png') }}"
+                                       {% endif %}
+                                       alt="..." id="picture" /></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <form class="was-validated" method="POST" action="/suaThongTinSP" enctype="multipart/form-data">
+                                        <input type="hidden" name="id" id="" value="{{ product.id }}">
+                                        <div class="mb-3">
+                                            <label for="validationTextarea" class="form-label">Tên sản phẩm</label>
+                                            <input class="form-control" id="validationTextarea"
+                                                placeholder="Required example textarea" required value="{{ product.tensp }}" name="tensp">
+                                            <div class="invalid-feedback">
+                                                Vui lòng nhập tên sản phẩm.
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="validationTextarea" class="form-label">Giá</label>
+                                            <input class="form-control" id="validationTextarea2"
+                                                placeholder="Required example textarea" required type="number" value="{{ product.giasp }}" name="giasp">
+                                            <div class="invalid-feedback">
+                                                Vui lòng nhập giá.
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="validationTextarea" class="form-label">Mô tả</label>
+                                            <textarea class="form-control" id="validationTextarea3"
+                                                      placeholder="Required example textarea" required name="mota" rows="10" cols="10">{{ product.mota }} </textarea>
+                                            <div class="invalid-feedback">
+                                                Vui lòng nhập mô tả.
+                                            </div>
+                                        </div>
 
-                    <!-- 404 Error Text -->
-                    <div class="text-center">
-                        <div class="error mx-auto" data-text="404">404</div>
-                        <p class="lead text-gray-800 mb-5">Page Not Found</p>
-                        <p class="text-gray-500 mb-0">It looks like you found a glitch in the matrix...</p>
-                        <p class="text-gray-500 mb-0">{{ error }}</p>
-                        <a href="index">&larr; Back to Dashboard</a>
-                    </div>
+                                        <div class="mb-3">
+                                            <select class="form-select" name="loai" required aria-label="select example">
+                                                <option value="">Loại</option>
+                                                {% for loai in list_loai %}
+                                                    <option value={{ loai['id']}}>{{ loai['tensanpham']}} </option>
+                                                {% endfor %}
+                                            </select>
+                                            <div class="invalid-feedback">Vui lòng chọn loại</div>
+                                        </div>
 
+                                        <div class="mb-3">
+                                            <label for="validationTextarea" class="form-label">Hình ảnh</label>
+                                            <input type="file" class="form-control" aria-label="file example" id="inputPicture" name="picture">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <button class="btn btn-primary" type="submit">Submit form</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                    </section>
                 </div>
                 <!-- /.container-fluid -->
 
@@ -354,7 +405,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
+                        <span>Copyright &copy; Your Website 2021</span>
                     </div>
                 </div>
             </footer>
@@ -392,7 +443,7 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js')}} "></script>
+    <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
     <!-- Core plugin JavaScript-->
@@ -400,6 +451,28 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{{ url_for('static', filename='js/sb-admin-2.min.js') }}"></script>
+
+    <!-- Page level plugins -->
+    <script src="{{ url_for('static', filename='vendor/chart.js/Chart.min.js') }}"></script>
+    <script>
+        document.getElementById('inputPicture').addEventListener('change', function (e) {
+            var file = e.target.files[0];
+            var imageType = /image.*/;
+
+            if (!file.type.match(imageType)) {
+                alert('File is not an image.');
+                return;
+            }
+
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var img = document.getElementById('picture');
+                img.src = reader.result;
+            }
+            reader.readAsDataURL(file);
+        })
+    </script>
+
 
 </body>
 

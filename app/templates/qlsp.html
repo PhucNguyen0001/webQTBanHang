@@ -89,13 +89,19 @@
 
             <!-- Nav Item - Tables -->
             <li class="nav-item">
-                <a class="nav-link" href="qlkh">
+                <a class="nav-link" href="/qlsp">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Quản lí sản phẩm</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/qlkh">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Quản lí khách hàng</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="qldh">
+                <a class="nav-link" href="/qldh">
                     <i class="fas fa-fw fa-table"></i>
                     <span>Quản lí đơn hàng</span>
                 </a>
@@ -373,10 +379,10 @@
                                             <td>{{ record.giasp}}</td>
                                             <td>{{ record.mota }}</td>
                                             <td>{{ record.tensanpham }}</td>
-                                            <th><a href="chitietsp">
+                                            <th><a href="{{ url_for('chitietsp', id=record.id) }}">
                                                 <button class="btn btn-primary">Xem</button>
                                             </a>
-                                            <a href="suasp">
+                                            <a href="{{ url_for('suattsp', id=record.id) }}">
                                                 <button class="btn btn-danger">Sửa</button>
                                             </a>
                                             <a href="xoasp">
@@ -386,10 +392,10 @@
                                     {% endfor %}
                                     </tbody>
                                 </table>
+                                <a href="/themsp"><button class="btn btn-primary">Thêm sản phẩm mới</button> </a>
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <!-- /.container-fluid -->
 

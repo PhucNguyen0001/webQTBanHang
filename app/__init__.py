@@ -1,6 +1,5 @@
-from flask import Flask, render_template, url_for, redirect
+from flask import Flask, render_template, url_for, redirect, request
 import os
-
 from .database import *
 
 # from .database import query
@@ -16,7 +15,7 @@ app.config.from_object('config')
 
 @app.errorhandler(404)
 def not_found(error):
-    return render_template('404.html')
+    return render_template('404.html', error=error)
 
 
 @app.route('/')
@@ -57,3 +56,60 @@ def qlkh():
 @app.route('/qlsp')
 def qlsp():
     return render_template('/qlsp.html', products=get_product())
+
+
+@app.route('/chitietsp/<id>')
+def chitietsp(id):
+    product = select_product(id)
+    return render_template('/chitietsp.html', product=product)
+
+
+@app.route('/suattsp/<id>')
+def suattsp(id):
+    product = select_product(id)
+    return render_template('/suattsp.html', product=product, list_loai=get_loai())
+
+
+@app.route('/suaThongTinSP', methods=['POST'])
+def suaThongTinSP():
+    file = request.files['picture']
+    id = request.form['id']
+    tensp = request.form['tensp']
+    mota = request.form['mota']
+    giasp = request.form['giasp']
+    loai = request.form['loai']
+    if file:
+        file_content = file.read()
+        hinhanh = f"data:image/{file.filename.split('.')[-1]};base64," + base64.b64encode(file_content).decode()
+    else:
+        hinhanh = None
+    try:
+        suaThongTinSanPham(id, tensp, giasp, hinhanh, mota, loai)
+    except Exception as e:
+        return render_template('404.html', error=e)
+    return redirect(f'chitietsp/{id}')
+
+
+@app.route('/themsp')
+def themsp():
+    return render_template('/themspmoi.html', list_loai=get_loai())
+
+
+@app.route('/themSPMoi', methods=['POST'])
+def themspmoi():
+    file = request.files['picture']
+    tensp = request.form['tensp']
+    mota = request.form['mota']
+    giasp = request.form['giasp']
+    loai = request.form['loai']
+    if file:
+        file_content = file.read()
+        hinhanh = f"data:image/{file.filename.split('.')[-1]};base64," + base64.b64encode(file_content).decode()
+    else:
+        hinhanh = None
+    try:
+        themSanPhamMoi(tensp, giasp, hinhanh, mota, loai)
+    except Exception as e:
+        return render_template('404.html', error=e)
+    return redirect('qlsp')
+

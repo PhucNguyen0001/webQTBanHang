@@ -1,4 +1,5 @@
 import datetime
+import base64
 
 from donhang import DonHang
 from sanpham import SanPham
@@ -125,17 +126,56 @@ def get_money_by_type():
 def get_product():
     query = (SanPhamMoi
              # .select(SanPhamMoi.tensp, SanPhamMoi.giasp, SanPhamMoi.mota, SanPhamMoi.hinhanh, SanPham.tensanpham)
-             .select(SanPhamMoi.tensp,
+             .select(SanPhamMoi.id,
+                     SanPhamMoi.tensp,
                      SanPhamMoi.giasp,
                      SanPhamMoi.mota,
-                     SanPhamMoi.hinhanh,
                      SanPham.tensanpham)
              .join(SanPham)
              .dicts())
     return list(query)
 
 
+def select_product(id):
+    is_link = True
+    query = (SanPhamMoi
+             # .select(SanPhamMoi.tensp, SanPhamMoi.giasp, SanPhamMoi.mota, SanPhamMoi.hinhanh, SanPham.tensanpham)
+             .select(SanPhamMoi.tensp,
+                     SanPhamMoi.giasp,
+                     SanPhamMoi.mota,
+                     SanPhamMoi.hinhanh,
+                     SanPham.tensanpham)
+             .join(SanPham)
+             .where(SanPhamMoi.id == id)
+             .dicts())
+    result = list(query)[0]
+    if 'http' not in str(result['hinhanh']):
+        try:
+            image_data = base64.b64decode(result.hinhanh)
+            with open('static/img/image.jpg', 'wbx') as file:
+                file.write(image_data)
+                result['hinhanh'] = 'img/image.jpg'
+        except Exception as e:
+            result['hinhanh'] = "/img/default_pic.png"
+        finally:
+            is_link = False
+    return result, is_link
+
+
+def suaThongTinSanPham(id, tensp, giasp, hinhanh, mota, loai):
+    record = SanPhamMoi.select().where(SanPhamMoi.id == id)
+    record.tensp = tensp
+    record.giasp = giasp
+    record.hinhanh = hinhanh
+    record.mota = mota
+    record.loai = loai
+    record.save()
+
+
+def get_loai():
+    query = SanPham.select(SanPham.id, SanPham.tensanpham).dicts()
+    return list(query)
+
+
 if __name__ == '__main__':
-    print(get_product())
-    # for record in get_product():
-    #     print(record.tensanpham)
+    print(select_product(18))
