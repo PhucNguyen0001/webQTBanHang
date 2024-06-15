@@ -382,12 +382,13 @@
                                             <td>{{ user.Mobile }}</td>
                                             <td>{{ user.Address }}</td>
                                             <td>{{ user.Password }}</td>
-                                            <th><a href="#">
+                                            <th><a href="{{ url_for('suattkh', id=user.id) }}">
                                                 <button class="btn btn-primary">Sửa</button>
                                             </a>
-                                            <a href="#">
-                                                <button class="btn btn-danger">Xóa</button>
-                                            </a></th>
+<!--                                            <a href="#">-->
+<!--                                                <button class="btn btn-danger">Xóa</button>-->
+<!--                                            </a>-->
+                                            </th>
                                         </tr>
                                     {% endfor %}
                                     </tbody>

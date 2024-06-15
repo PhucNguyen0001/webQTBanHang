@@ -78,13 +78,15 @@ def suaThongTinSP():
     mota = request.form['mota']
     giasp = request.form['giasp']
     loai = request.form['loai']
+    loaianh = ''
     if file:
         file_content = file.read()
-        hinhanh = f"data:image/{file.filename.split('.')[-1]};base64," + base64.b64encode(file_content).decode()
+        hinhanh = base64.b64encode(file_content).decode()
+        loaianh = file.filename.split('.')[-1]
     else:
         hinhanh = None
     try:
-        suaThongTinSanPham(id, tensp, giasp, hinhanh, mota, loai)
+        suaThongTinSanPham(id, tensp, giasp, hinhanh, mota, loai, loaianh)
     except Exception as e:
         return render_template('404.html', error=e)
     return redirect(f'chitietsp/{id}')
@@ -102,14 +104,47 @@ def themspmoi():
     mota = request.form['mota']
     giasp = request.form['giasp']
     loai = request.form['loai']
+    loaianh = ''
     if file:
         file_content = file.read()
-        hinhanh = f"data:image/{file.filename.split('.')[-1]};base64," + base64.b64encode(file_content).decode()
+        hinhanh = base64.b64encode(file_content).decode()
+        loaianh = file.filename.split('.')[-1]
     else:
         hinhanh = None
     try:
-        themSanPhamMoi(tensp, giasp, hinhanh, mota, loai)
+        themSanPhamMoi(tensp, giasp, hinhanh, mota, loai, loaianh)
     except Exception as e:
         return render_template('404.html', error=e)
     return redirect('qlsp')
+
+
+@app.route('/suattkh/<id>')
+def suattkh(id):
+    return render_template('/suattkh.html', kh=select_customer(id))
+
+
+@app.route('/suaThongTinKH', methods=['POST'])
+def suaThongTinKH():
+    id = request.form['id']
+    username = request.form['username']
+    mobile = request.form['mobile']
+    diachi = request.form['diachi']
+    try:
+        suaThongTinUser(id, username, mobile, diachi)
+    except Exception as e:
+        return render_template('404.html', error=e)
+    return redirect('/qlkh')
+
+
+@app.route('/capNhatDH/<id>/xacNhan', methods=['POST'])
+def xacNhanDH(id):
+    capNhatDonHang(id)
+    return redirect('/qldh')
+
+
+@app.route('/capNhatDH/<id>/huy', methods=['POST'])
+def huyDH(id):
+    capNhatDonHang(id, False)
+    return redirect('/qldh')
+
 

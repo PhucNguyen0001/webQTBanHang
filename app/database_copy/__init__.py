@@ -9,7 +9,7 @@ from user import User
 from peewee import *
 from db_connect import myDB
 
-arr_trangthai = ['Chưa xác nhận', 'Đã xác nhận', 'Đang giao hàng', 'Đã nhận hàng']
+arr_trangthai = ['Chưa xác nhận', 'Đã xác nhận', 'Đang giao hàng', 'Đã nhận hàng', 'Đã hủy']
 
 
 def get_sanpham():
@@ -31,7 +31,8 @@ def get_dsdonhang():
         "phone_number": record.sodienthoai,
         "order_date": record.ngaydathang.strftime('%Y-%m-%d'),
         "total": record.tongtien,
-        "status": arr_trangthai[record.trangthai]
+        "status": arr_trangthai[record.trangthai],
+        "status_int": record.trangthai
     } for record in query]
     # return query
 
@@ -177,5 +178,21 @@ def get_loai():
     return list(query)
 
 
+def select_customer(id):
+    query = User.select().where(User.id == id).dicts()
+    return list(query)
+
+
+def capNhatDonHang(id, action=True):
+    if action:
+        query = (DonHang.update(trangthai=DonHang.trangthai + 1)
+                 .where(DonHang.id == id))
+        query.execute()
+    else:
+        query = (DonHang.update(trangthai=-1)
+                 .where(DonHang.id == id))
+        query.execute()
+
+
 if __name__ == '__main__':
-    print(select_product(18))
+    print(capNhatDonHang(1, False))

@@ -9,6 +9,7 @@ class SanPhamMoi(Model):
     hinhanh = TextField()
     mota = TextField()
     loai = ForeignKeyField(SanPham, backref='type', field='id', column_name='loai')
+    loaianh = TextField()
 
     class Meta:
         database = myDB

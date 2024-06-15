@@ -385,7 +385,33 @@
                                             <td>{{ dh.order_date }}</td>
                                             <td>{{ dh.total }}</td>
                                             <td>{{ dh.status }}</td>
-                                            <td>Thao tác</td>
+                                            <td>{% if dh.status_int == 0 %}
+                                                <form action="/capNhatDH/{{dh.id}}/xacNhan" method="post">
+                                                    <button class="btn btn-primary" type="submit">Xác nhận đơn hàng</button>
+                                                </form>
+                                                <form action="/capNhatDH/{{dh.id}}/huy" method="post">
+                                                    <button class="btn btn-danger" type="submit">Hủy đơn hàng</button>
+                                                </form>
+                                                {% elif dh.status_int == 1 %}
+                                                <form action="/capNhatDH/{{dh.id}}/xacNhan" method="post">
+                                                    <button class="btn btn-primary" type="submit">Xác nhận giao hàng</button>
+                                                </form>
+                                                <form action="/capNhatDH/{{dh.id}}/huy" method="post">
+                                                    <button class="btn btn-danger" type="submit">Hủy đơn hàng</button>
+                                                </form>
+                                                {% elif dh.status_int == 2 %}
+                                                <form action="/capNhatDH/{{dh.id}}/xacNhan" method="post">
+                                                    <button class="btn btn-primary" type="submit">Xác nhận nhận hàng</button>
+                                                </form>
+                                                <form action="/capNhatDH/{{dh.id}}/huy" method="post">
+                                                    <button class="btn btn-danger" type="submit">Hủy đơn hàng</button>
+                                                </form>
+                                                {% elif dh.status_int == 3 %}
+                                                    <p>Đã hoàn thành</p>
+                                                {% else %}
+                                                    <p>Đơn hàng đã hủy</p>
+                                                {% endif %}
+                                            </td>
                                         </tr>
                                     {% endfor %}
                                     </tbody>
